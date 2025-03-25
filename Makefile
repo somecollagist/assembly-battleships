@@ -10,10 +10,13 @@ ASFLAGS := -Wno-eof-newline
 LD		:= ld
 LDFLAGS := --oformat binary --script=linker.ld
 
+OD		:= objdump
+ODFLAGS	:= -dhsZ -mi8086
+
 ASMSRC	:= $(shell find $(SRC) -name "*.s")
 ASMTAR	:= $(patsubst $(SRC)/%.s,$(BIN)/%.o,$(ASMSRC))
 
-all: build run
+all: clean build run
 
 build: $(ASMTAR)
 	@$(LD) $(LDFLAGS) $^ -o $(TARGET)
@@ -23,9 +26,11 @@ run:
 	@qemu-system-x86_64 -hda $(TARGET) -vga std
 
 clean:
-	@git clean -Xdf
+	@clear
+	@git clean -Xdf > /dev/null
 
 $(BIN)/%.o: $(SRC)/%.s
 	@mkdir -p $(shell dirname $@)
 	@$(AS) $(ASFLAGS) $^ -o $@
-	@objdump -dx $@ > $(patsubst %.o,%.dis,$@)
+	@objcopy -R .note.* $@ $@
+	@$(OD) $(ODFLAGS) $@ > $(patsubst %.o,%.dis,$@)

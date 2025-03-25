@@ -8,13 +8,13 @@
 
 .equ PLAYER_TORPEDO_CHAR,   $'X
 .equ ENEMY_TORPEDO_CHAR,    $'X
-.equ TORPEDO_MISS_COL,      $0x9F
-.equ TORPEDO_HIT_COL,       $0x9C
-.equ OCEAN,                 $0x99
-.equ BACKGROUND,            $0x07
+.equ TORPEDO_MISS_COL,      0x9F
+.equ TORPEDO_HIT_COL,       0x9C
+.equ OCEAN,                 0x99
+.equ BACKGROUND,            0x07
 
-.set VRAM_ROWS,             25
-.set VRAM_COLS,             80
+.equ VRAM_ROWS,             25
+.equ VRAM_COLS,             80
 .macro VRAM_ROW_COL,        row, col
     (row*VRAM_COLS+col)
 .endm
@@ -35,7 +35,7 @@ clear_screen:
     int $0x10
 
     mov $0x0700, %ax        # Clear screen
-    mov $0x07, %bh
+    mov BACKGROUND, %bh
     mov $0000, %cx
     mov ((VRAM_ROWS-1)<<8)|(VRAM_COLS-1), %dx
     int $0x10
