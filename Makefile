@@ -27,7 +27,7 @@ run:
 
 clean:
 	@clear
-	@git clean -Xdf > /dev/null
+	@rm -rf $(BIN)
 
 $(BIN)/%.o: $(SRC)/%.s
 	@mkdir -p $(shell dirname $@)
