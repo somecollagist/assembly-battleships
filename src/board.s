@@ -1,7 +1,11 @@
-# specify real mode
 .code16
-.global _start
 
+.global player_ships
+.global computer_ships
+.global player_torpedoes
+.global computer_torpedoes
+
+.data
 player_ships:
     .byte 0b00000000        # 8                
     .byte 0b00000111        # 7           X X X
@@ -11,9 +15,9 @@ player_ships:
     .byte 0b01000010        # 3   X         X  
     .byte 0b01000010        # 2   X         X  
     .byte 0b01000000        # 1   X            
-                            #   A B C D E F G H
+                            #   A B C D E F G HP
 
-enemy_ships:
+computer_ships:
     .byte 0b10000000        # 8 X              
     .byte 0b10111110        # 7 X   X X X X X  
     .byte 0b10000000        # 6 X              
@@ -24,21 +28,13 @@ enemy_ships:
     .byte 0b00110010        # 1     X X     X  
                             #   A B C D E F G H
 
-shots_at_player:
+player_torpedoes:
     .rept 8
     .byte 0
     .endr
 
-shots_at_enemy:
+computer_torpedoes:
     .rept 8
     .byte 0
     .endr
-
-_start:
-    cli                     # Clear interrupts
-
-    jmp .                   # Infinite loop
-
-# make bootable sector
-.org 510
-.word 0xAA55
+    
