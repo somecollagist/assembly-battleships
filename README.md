@@ -18,3 +18,4 @@ Three years later, now at university, I was reminded of this project by an assig
 - Toby Birkenshaw
 - [Lorenzo Pace](https://mell-o-tron.github.io/)
 - Aneesh Subramanian
+- Daniel Wyeth
