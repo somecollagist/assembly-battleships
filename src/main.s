@@ -4,6 +4,7 @@
 
 .extern clear_screen
 .extern display
+.extern query
 
 .section .text.entry, "a"
 _start:

@@ -2,6 +2,7 @@
 
 .global clear_screen
 .global display
+.global print_string
 
 .extern player_ships
 .extern computer_ships

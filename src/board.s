@@ -47,4 +47,7 @@ computer_torpedoes:
     .byte 0b00000000
     .byte 0b00000000
     .byte 0b00000000
-    
+
+torpedo_target:
+    .byte 0x00  # Row
+    .byte 0x00  # Column
