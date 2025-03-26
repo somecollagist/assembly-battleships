@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo pacman -S binutils qemu-system-x86_64
+sudo pacman -S binutils qemu-system-x86_64 qrencode

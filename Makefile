@@ -21,6 +21,7 @@ all: clean build run
 build: $(ASMTAR)
 	@$(LD) $(LDFLAGS) --oformat=binary $^ -o $(TARGET)
 	@$(OD) $(ODFLAGS) -b binary -D $(TARGET) > $(TARGET).dis
+	@qrencode -r $(TARGET) -o $(BIN)/qr.png -8
 
 run:
 	@clear
