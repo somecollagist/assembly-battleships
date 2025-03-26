@@ -1,13 +1,13 @@
 .code16
 
 .global _start
-.extern clear_screen
 
-.text
+.extern print_boards
+
+.section .text.entry, "a"
 _start:
     cli                     # Clear interrupts
 
-    call clear_screen
+    call print_boards
 
     jmp .                   # Infinite loop
-

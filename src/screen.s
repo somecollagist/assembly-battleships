@@ -1,6 +1,7 @@
 .code16
+#
+.global print_boards
 
-.global clear_screen
 .extern player_ships
 .extern computer_ships
 .extern player_torpedoes
@@ -10,7 +11,7 @@
 .equ ENEMY_TORPEDO_CHAR,    $'X
 .equ TORPEDO_MISS_COL,      0x9F
 .equ TORPEDO_HIT_COL,       0x9C
-.equ OCEAN,                 0x99
+.equ OCEAN,                 0x97
 .equ BACKGROUND,            0x07
 
 .equ VRAM_ROWS,             25
@@ -21,30 +22,27 @@
 
 .data
 player:
-    .ascii "Player:"
-    .byte 0
+    .asciz "Player:"
 
 enemy:
-    .ascii "Enemy:"
-    .byte 0
-    .byte 0                 # 16-byte alignment
+    .asciz "Enemy:"
 
 .text
-clear_screen:
-    mov $0x0003, %ax        # Set video mode to 80x25
-    int $0x10
+print_boards:
+    movb    $0x02, %ah                                  # Move cursor to top of screen
+    movw    $0x0000, %dx
+    int     $0x10
 
-    mov $0x0700, %ax        # Clear screen
-    mov BACKGROUND, %bh
-    mov $0000, %cx
-    mov ((VRAM_ROWS-1)<<8)|(VRAM_COLS-1), %dx
-    int $0x10
+    movw    $player, %si
+    movb    $0x0E, %ah
+    movb    BACKGROUND, %bl
+    player_print:
+        movb    (%si), %al
+        cmpb    $0, %al
+        je      player_print_end
+        int     $0x10
+        inc     %si
+        jmp     player_print
+    player_print_end:
 
-    mov $0x01, %ah          # Hide cursor
-    mov $0x2607, %cx
-    int $0x10
-
-    mov $0x02, %ah          # Move cursor to top of screen
-    mov $0x0000, %dx
-    int $0x10
     ret
