@@ -2,12 +2,16 @@
 
 .global _start
 
-.extern print_boards
+.extern clear_screen
+.extern display
 
 .section .text.entry, "a"
 _start:
-    cli                     # Clear interrupts
+    # Clear interrupts
+    cli
 
-    call print_boards
+    call clear_screen
+    call display
 
-    jmp .                   # Infinite loop
+    # Infinite loop
+    jmp .

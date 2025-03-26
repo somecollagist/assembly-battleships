@@ -15,7 +15,7 @@ player_ships:
     .byte 0b01000010        # 3   X         X  
     .byte 0b01000010        # 2   X         X  
     .byte 0b01000000        # 1   X            
-                            #   A B C D E F G HP
+                            #   A B C D E F G H
 
 computer_ships:
     .byte 0b10000000        # 8 X              
@@ -29,12 +29,22 @@ computer_ships:
                             #   A B C D E F G H
 
 player_torpedoes:
-    .rept 8
-    .byte 0
-    .endr
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
 
 computer_torpedoes:
-    .rept 8
-    .byte 0
-    .endr
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
+    .byte 0b00000000
     

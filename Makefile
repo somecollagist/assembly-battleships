@@ -25,7 +25,7 @@ build: $(ASMTAR)
 
 run:
 	@clear
-	@qemu-system-x86_64 -hda $(TARGET) -vga std
+	@qemu-system-x86_64 -hda $(TARGET) -vga virtio
 
 clean:
 	@clear
