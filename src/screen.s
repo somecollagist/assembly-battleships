@@ -1,6 +1,7 @@
 .code16
 
-.global clear_screen
+.global init_screen
+.global cursor_newline
 .global display
 .global print_string
 
@@ -14,15 +15,13 @@
 .equ COL_SHIP_HIT,          0x1C # Light blue background, red foreground
 .equ COL_TORPEDO_OK,        0x1F # Light blue background, white foreground
 .equ COL_TORPEDO_HIT,       0x1C # Light blue background, light red foreground
-.equ CHAR_SHIP,             '#
-.equ CHAR_TORPEDO,          'X
+.equ CHAR_OCCUPIED,         '#
 .equ CHAR_EMPTY,            ' 
 
 .equ VRAM_ROWS,             25
 .equ VRAM_COLS,             40
-.macro VRAM_ROW_COL,        row, col
-    (row*VRAM_COLS+col)
-.endm
+.equ VRAM_UPPER_LEFT,       0
+.equ VRAM_LOWER_RIGHT,      ((VRAM_ROWS-1)<<8)+(VRAM_COLS-1)
 
 .data
 player_legend:
@@ -35,7 +34,7 @@ board_col_legend:
     .asciz " ABCDEFGH\r\n"
 
 .text
-clear_screen:
+init_screen:
     # Set video mode to 40x25, VGA colours, 8x8 characters
     movw    $0x000D, %ax
     int     $0x10
@@ -53,7 +52,9 @@ display:
     movb    $0x02, %ah
     movw    $0x0000, %dx
     int     $0x10
-    movb    $0x0E, %ah                      # Print only characters from here
+
+    # Only print characters from now
+    movb    $0x0E, %ah
 
     # Print player's ships
     movw    $player_legend, %si
@@ -65,8 +66,8 @@ display:
     # Print enemy's ships
     movw    $enemy_legend, %si
     call    print_string
-    movw    $player_torpedoes, %si
-    movw    $computer_ships, %di
+    movw    $player_torpedoes, %di
+    movw    $computer_ships, %si
     call    print_board
 
     popa
@@ -97,7 +98,7 @@ print_board:
 
             testb   %cl, %dh
             jz     .print_cell_execute      # If there's no ship, print
-            movb    $CHAR_SHIP, %al         # Cell contains a ship
+            movb    $CHAR_OCCUPIED, %al     # Cell contains a ship
             movb    (%di), %dh              # Store current torpedo row in %sh
             testb   %cl, %dh
             jz      .print_cell_execute     # If the ship isn't hit, print (i.e. it's ok)
